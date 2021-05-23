@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +14,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        setContentView(R.layout.second_layout);
-        // получаем элемент textView
-        TextView textView = (TextView) findViewById(R.id.header);
-        // переустанавливаем у него текст
-        textView.setText("Hello from Java!");
+        TextView textView = new TextView(this);
+        textView.setText("Hello Android");
+        textView.setTextSize(26);
+
+        ConstraintLayout constraintLayout = new ConstraintLayout(this);
+        // устанавливаем параметры размеров и расположение элемента
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                (ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        // эквивалент app:layout_constraintLeft_toLeftOf="parent"
+        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+        // эквивалент app:layout_constraintTop_toTopOf="parent"
+        layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        // устанавливаем параметры для textView
+        textView.setLayoutParams(layoutParams);
+        // добавляем TextView в ConstraintLayout
+        constraintLayout.addView(textView);
+        setContentView(constraintLayout);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
