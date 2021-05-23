@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -26,10 +27,14 @@ public class MainActivity extends AppCompatActivity {
         layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
         // эквивалент app:layout_constraintTop_toTopOf="parent"
         layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        layoutParams.setMargins(40,40,40,40);
         // устанавливаем параметры для textView
         textView.setLayoutParams(layoutParams);
+        textView.setPadding(0,0,0,70);
+        textView.setBackgroundColor(Color.BLUE);
         // добавляем TextView в ConstraintLayout
         constraintLayout.addView(textView);
+        constraintLayout.setPadding(49,49,49,49);
         setContentView(constraintLayout);
     }
     // Метод обработки нажатия на кнопку
