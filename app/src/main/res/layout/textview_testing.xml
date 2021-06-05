@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/first"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_margin="10dp"
+
+        android:text="Hello Android "
+        android:fontFamily="sans-serif"
+        android:textSize="26sp"
+        android:background="#ffebee"
+        android:textColor="#f44336"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_margin="10dp"
+
+        android:text="Hello Java"
+        android:textAllCaps="true"
+        android:textSize="26sp"
+        android:background="#ede7f6"
+        android:textColor="#7e57c2"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_margin="10dp"
+
+        android:text="Hello World"
+        android:textAlignment="textEnd"
+        android:textSize="26sp"
+        android:background="#e8eaf6"
+        android:textColor="#5c6bc0"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:text="Посетите сайт https://metanit.com"
+        android:textSize="21sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web|email"
+        android:layout_marginTop="20sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/first"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
