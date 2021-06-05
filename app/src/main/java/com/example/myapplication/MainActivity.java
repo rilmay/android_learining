@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        textViewLayout(savedInstanceState);
+        buttonTestingLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -37,9 +37,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void sendMessageButtonTesting(View view){
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String message = editText.getText().toString();
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setText(message);
+    }
+
     public void sendToLayoutFromJava(View view) {
         Intent intent = new Intent(this, UiTesting.class);
         startActivity(intent);
+    }
+
+    public void buttonTestingLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.buttom_testing);
     }
 
     public void textViewLayout(Bundle savedInstanceState) {
