@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        buttonTestingLayout(savedInstanceState);
+        buttonToCalculatorLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -51,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonTestingLayout(Bundle savedInstanceState) {
         setContentView(R.layout.buttom_testing);
+    }
+
+    public void buttonToCalculatorLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.button_to_calculator);
+    }
+
+    public void sendToCalculatorLayout(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        startActivity(intent);
     }
 
     public void textViewLayout(Bundle savedInstanceState) {
