@@ -8,10 +8,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        buttonToCalculatorLayout(savedInstanceState);
+        toastLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -130,4 +136,41 @@ public class MainActivity extends AppCompatActivity {
             clicksText.setText(clicks + " Clicks");
         });
     }
+
+    public void toastLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.toast_and_snackbar_testing);
+    }
+
+    public void showToastMessage(View view) {
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout));
+
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText("Hello Android!");
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+
+    public void showSnackbar(View view) {
+        Snackbar snackbar = Snackbar.make(view, "Hello Android", Snackbar.LENGTH_LONG);
+        snackbar.setTextColor(0XFF81C784);
+        snackbar.setBackgroundTint(0XFF555555);
+        snackbar.setActionTextColor(0XFF0277BD);
+
+        snackbar.setAction("Next...", new View.OnClickListener (){
+            @Override
+            public void onClick(View v) {
+                showToastMessage(v);
+            }
+        });
+        snackbar.show();
+    }
+
+
 }
