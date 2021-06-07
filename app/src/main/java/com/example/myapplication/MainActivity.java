@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toastLayout(savedInstanceState);
+        checkBoxLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -172,5 +173,22 @@ public class MainActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    public void checkBoxLayout(Bundle bundle) {
+        setContentView(R.layout.checkbox_testing);
+    }
 
+    public void onCheckboxClicked(View view) {
+        // Получаем флажок
+        CheckBox checkBox = (CheckBox) view;
+        TextView selection = (TextView) findViewById(R.id.selection);
+        // Получаем, отмечен ли данный флажок
+        if(checkBox.isChecked()) {
+            selection.setText("Включено");
+            checkBox.setText("Выключить");
+        }
+        else {
+            selection.setText("Выключено");
+            checkBox.setText("Включить");
+        }
+    }
 }
