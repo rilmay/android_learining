@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkBoxLayout(savedInstanceState);
+        toggleLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -42,6 +43,23 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("message", message);
         // запуск activity
         startActivity(intent);
+    }
+
+    public void onToggleClicked(View view) {
+
+        // включена ли кнопка
+        boolean on = ((ToggleButton) view).isChecked();
+        if (on) {
+            // действия если включена
+            Toast.makeText(this, "Свет включен", Toast.LENGTH_LONG).show();
+        } else {
+            // действия, если выключена
+            Toast.makeText(this, "Свет выключен!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void toggleLayout(Bundle bundle) {
+        setContentView(R.layout.toggle_testing);
     }
 
     public void sendMessageButtonTesting(View view){
