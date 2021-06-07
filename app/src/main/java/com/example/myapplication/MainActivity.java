@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toggleLayout(savedInstanceState);
+        radioButtonLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -43,6 +44,29 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("message", message);
         // запуск activity
         startActivity(intent);
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // если переключатель отмечен
+        boolean checked = ((RadioButton) view).isChecked();
+        TextView selection = (TextView) findViewById(R.id.selection);
+        // Получаем нажатый переключатель
+        switch(view.getId()) {
+            case R.id.java:
+                if (checked){
+                    selection.setText("Выбрана Java");
+                }
+                break;
+            case R.id.kotlin:
+                if (checked){
+                    selection.setText("Выбран Kotlin");
+                }
+                break;
+        }
+    }
+
+    public void radioButtonLayout(Bundle bundle) {
+        setContentView(R.layout.radiobutton_testing);
     }
 
     public void onToggleClicked(View view) {
