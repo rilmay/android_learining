@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        timePickerLayout(savedInstanceState);
+        seekBarLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -103,6 +104,29 @@ public class MainActivity extends AppCompatActivity {
                 timeTextView.setText("Время: " + hourOfDay + ":" + minute);
                 // или так
                 // timeTextView.setText("Время: " + view.getHour() + ":" + view.getMinute());
+            }
+        });
+    }
+
+    public void seekBarLayout(Bundle bundle) {
+        setContentView(R.layout.seekbar_testing);
+        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        TextView textView = (TextView) findViewById(R.id.seekBarValue);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                textView.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }
