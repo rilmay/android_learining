@@ -18,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        datePickerLayout(savedInstanceState);
+        timePickerLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -86,6 +87,22 @@ public class MainActivity extends AppCompatActivity {
 
                 // альтернативная запись
                 // dateTextView.setText("Дата: " + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+            }
+        });
+    }
+
+    public void timePickerLayout(Bundle bundle) {
+        setContentView(R.layout.timepicker_testing);
+        TextView timeTextView = (TextView)findViewById(R.id.timeTextView);
+        TimePicker timePicker = (TimePicker)this.findViewById(R.id.timePicker);
+
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+
+                timeTextView.setText("Время: " + hourOfDay + ":" + minute);
+                // или так
+                // timeTextView.setText("Время: " + view.getHour() + ":" + view.getMinute());
             }
         });
     }
