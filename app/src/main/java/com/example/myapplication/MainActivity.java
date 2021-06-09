@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        seekBarLayout(savedInstanceState);
+        resourceLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public void resourceLayout(Bundle bundle) {
+        setContentView(R.layout.resource_testing);
+        TextView textView = (TextView) findViewById(R.id.insert_here);
+        textView.setText("This is my " +getResources().getString(R.string.app_name));
     }
 
     public void radioButtonLayout(Bundle bundle) {
