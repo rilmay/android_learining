@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dimensionsProgrammaticalLayout(savedInstanceState);
+        colorLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -92,6 +92,38 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         // устанавливаем отступы пв соответствии с ресурсами
         layoutParams.setMargins(hMargin, vMargin, hMargin, vMargin);
+
+        textView.setLayoutParams(layoutParams);
+        constraintLayout.addView(textView);
+
+        setContentView(constraintLayout);
+    }
+
+    public void colorLayout(Bundle bundle) {
+        Resources resources = getResources();
+        int textColor = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            textColor = resources.getColor(R.color.textViewFontColor,  null);
+        }
+        int backgroundColor = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            backgroundColor = resources.getColor(R.color.textViewBackColor,  null);
+        }
+
+        ConstraintLayout constraintLayout = new ConstraintLayout(this);
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                (ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+
+        TextView textView = new TextView(this);
+        textView.setText("Hello Android");
+        textView.setTextSize(32);
+
+        // используем ресурсы color
+        textView.setTextColor(textColor);
+        textView.setBackgroundColor(backgroundColor);
 
         textView.setLayoutParams(layoutParams);
         constraintLayout.addView(textView);
