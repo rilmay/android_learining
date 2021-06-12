@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="welcome">zdraste</string>
+
+    <string-array name="languages">
+        <item>Java</item>
+        <item>Kotlin</item>
+        <item>Dart</item>
+    </string-array>
 </resources>

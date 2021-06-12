@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_header">welcome header</string>
+    <string name="message">Hello Android!</string>
+    <string name="welcome_message">Добро пожаловать %1$s! Уже %2$d : %3$d</string>
+</resources>

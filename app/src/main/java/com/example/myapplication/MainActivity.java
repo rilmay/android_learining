@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +74,25 @@ public class MainActivity extends AppCompatActivity {
     public void resourceLayout(Bundle bundle) {
         setContentView(R.layout.resource_testing);
         TextView textView = (TextView) findViewById(R.id.insert_here);
-        textView.setText("This is my " +getResources().getString(R.string.app_name));
+
+
+        String userName = "Евгений";
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        String text = getString(R.string.welcome_message, userName, hour, minute);
+
+        Resources res = getResources();
+        String[] languages = res.getStringArray(R.array.languages);
+        String allLangs = "";
+        for (String lang: languages) {
+            allLangs += lang + " ";
+        }
+
+        textView.setText(text + allLangs);
+        textView.setTextSize(28);
+
     }
 
     public void radioButtonLayout(Bundle bundle) {

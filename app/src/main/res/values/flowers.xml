@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="flowers_1">
+        <item quantity="one">%d цветок</item>
+        <item quantity="few">%d цветка</item>
+        <item quantity="many">%d цветков</item>
+    </plurals>
+</resources>
