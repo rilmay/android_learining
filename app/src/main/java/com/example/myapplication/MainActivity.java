@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        colorLayout(savedInstanceState);
+        buttonToLoggedActivity(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -50,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         // второй параметр - значение этого объекта
         intent.putExtra("message", message);
         // запуск activity
+        startActivity(intent);
+    }
+
+    public void buttonToLoggedActivity(Bundle bundle){
+        setContentView(R.layout.button_to_acitivty_cycle);
+    }
+
+    public void sendToLoggedActivity(View view) {
+        Intent intent = new Intent(this, LoggedActivity.class);
         startActivity(intent);
     }
 
