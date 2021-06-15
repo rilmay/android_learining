@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        buttonToLoggedActivity(savedInstanceState);
+        buttonToSecondActivityLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -390,5 +390,14 @@ public class MainActivity extends AppCompatActivity {
             selection.setText("Выключено");
             checkBox.setText("Включить");
         }
+    }
+
+    public void buttonToSecondActivityLayout(Bundle bundle){
+        setContentView(R.layout.button_to_second_activity);
+    }
+
+    public void sendToSecondActivity(View view) {
+        Intent intent = new Intent(this, SecondActivity.class);
+        startActivity(intent);
     }
 }

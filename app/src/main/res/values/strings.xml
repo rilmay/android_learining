@@ -7,4 +7,6 @@
         <item>Kotlin</item>
         <item>Dart</item>
     </string-array>
+
+    <string name="second_activity_button_label">you are in second activity</string>
 </resources>
