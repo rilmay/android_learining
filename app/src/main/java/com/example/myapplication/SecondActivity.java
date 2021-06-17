@@ -22,7 +22,7 @@ public class SecondActivity extends AppCompatActivity {
 
         User user;
         if(arguments!=null){
-            user = (User) arguments.getSerializable(User.class.getSimpleName());
+            user = arguments.getParcelable(User.class.getSimpleName());
 
             textView.setText("Name: " + user.getName() + "\nCompany: " + user.getCompany() +
                     "\nAge: " + String.valueOf(user.getAge()));
