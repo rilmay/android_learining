@@ -25,6 +25,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.myapplication.entity.User;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
@@ -397,7 +398,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendToSecondActivity(View view) {
+        EditText nameText = findViewById(R.id.name);
+        EditText companyText = findViewById(R.id.company);
+        EditText ageText = findViewById(R.id.age);
+
+        String name = nameText.getText().toString();
+        String company = companyText.getText().toString();
+        int age = Integer.parseInt(ageText.getText().toString());
+
+        User user = new User(name, company, age);
+
         Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra(User.class.getSimpleName(), user);
         startActivity(intent);
     }
 }
