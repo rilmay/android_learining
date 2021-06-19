@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        buttonToSecondActivityLayout(savedInstanceState);
+        mainActivityWithResult(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -411,5 +412,40 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra(User.class.getSimpleName(), user);
         startActivity(intent);
+    }
+
+    static final String AGE_KEY = "AGE";
+    static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
+    private static  final int REQUEST_ACCESS_TYPE=1;
+
+    public void mainActivityWithResult(Bundle bundle) {
+        setContentView(R.layout.main_acitivity_with_result);
+    }
+
+    public void onClickWithResult(View view) {
+        // получаем введенный возраст
+        EditText ageBox = (EditText) findViewById(R.id.age);
+        String age = ageBox.getText().toString();
+
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra(AGE_KEY, age);
+        startActivityForResult(intent, REQUEST_ACCESS_TYPE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        TextView textView = (TextView) findViewById(R.id.textView);
+        if(requestCode==REQUEST_ACCESS_TYPE){
+            if(resultCode==RESULT_OK){
+                String accessMessage = data.getStringExtra(ACCESS_MESSAGE);
+                textView.setText(accessMessage);
+            }
+            else{
+                textView.setText("Ошибка доступа");
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

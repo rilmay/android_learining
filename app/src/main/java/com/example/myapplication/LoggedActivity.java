@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class LoggedActivity extends AppCompatActivity {
-    private final static String TAG = "LoggedActivity";
+    public final static String TAG = "LoggedActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
