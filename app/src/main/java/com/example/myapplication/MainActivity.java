@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -29,6 +32,8 @@ import android.widget.ToggleButton;
 import com.example.myapplication.entity.User;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivityWithResult(savedInstanceState);
+        imageLayoutFromAssets(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -80,6 +85,51 @@ public class MainActivity extends AppCompatActivity {
                     selection.setText("Выбран Kotlin");
                 }
                 break;
+        }
+    }
+
+    public void imageLayout(Bundle bundle) {
+        ConstraintLayout constraintLayout = new ConstraintLayout(this);
+        ImageView imageView = new ImageView(this);
+        Resources res = getResources();
+        Drawable drawable = ResourcesCompat.getDrawable(res, R.drawable.rel, null);
+        // применяем ресурс
+        imageView.setImageDrawable(drawable);
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
+                (ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        imageView.setLayoutParams(layoutParams);
+        constraintLayout.addView(imageView);
+
+        setContentView(constraintLayout);
+    }
+
+    public void imageLayoutFromAssets(Bundle bundle) {
+
+        setContentView(R.layout.pictures_testing);
+
+        ImageView imageView = (ImageView) findViewById(R.id.image) ;
+        String filename = "rel.jpg";
+        InputStream inputStream = null;
+        try{
+            inputStream = getApplicationContext().getAssets().open(filename);
+            Drawable drawable = Drawable.createFromStream(inputStream, null);
+            imageView.setImageDrawable(drawable);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(inputStream!=null)
+                    inputStream.close();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
         }
     }
 
