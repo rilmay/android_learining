@@ -17,11 +17,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,15 +36,19 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    List<String> countries = new ArrayList<>(Arrays.asList("США", "Россия"));
 
     int clicks = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imageLayoutFromAssets(savedInstanceState);
+        arrayAdapterLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -86,6 +92,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public void arrayAdapterLayout(Bundle bundle) {
+        setContentView(R.layout.array_adapter_testing);
+        ListView listView = (ListView) findViewById(R.id.countriesList);
+        // создаем адаптер
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, countries);
+
+        // устанавливаем для списка адаптер
+        listView.setAdapter(adapter);
     }
 
     public void imageLayout(Bundle bundle) {
