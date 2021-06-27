@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrayAdapterLayout(savedInstanceState);
+        arrayAdapterEditing(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -131,6 +132,64 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    ArrayList<String> usersAdapterEditing = new ArrayList<String>();
+    ArrayList<String> selectedUsersAdapterEditing = new ArrayList<String>();
+    ArrayAdapter<String> adapterAdapterEditing;
+    ListView usersListAdapterEditing;
+
+    public void arrayAdapterEditing(Bundle bundle) {
+        setContentView(R.layout.adapter_list_editing);
+
+        // добавляем начальные элементы
+        Collections.addAll(usersAdapterEditing, "Tom", "Bob", "Sam", "Alice");
+        // получаем элемент ListView
+        usersListAdapterEditing = (ListView) findViewById(R.id.usersList);
+        // создаем адаптер
+        adapterAdapterEditing =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, usersAdapterEditing);
+        // устанавливаем для списка адаптер
+        usersListAdapterEditing.setAdapter(adapterAdapterEditing);
+
+        // обработка установки и снятия отметки в списке
+        usersListAdapterEditing.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                // получаем нажатый элемент
+                String user = adapterAdapterEditing.getItem(position);
+                if(usersListAdapterEditing.isItemChecked(position))
+                    selectedUsersAdapterEditing.add(user);
+                else
+                    selectedUsersAdapterEditing.remove(user);
+            }
+        });
+    }
+
+
+    public void addAdapter(View view){
+
+        EditText userName = (EditText) findViewById(R.id.userName);
+        String user = userName.getText().toString();
+        if(!user.isEmpty()){
+            adapterAdapterEditing.add(user);
+            userName.setText("");
+            adapterAdapterEditing.notifyDataSetChanged();
+        }
+    }
+    public void removeAdapter(View view){
+        // получаем и удаляем выделенные элементы
+        for(int i=0; i< selectedUsersAdapterEditing.size();i++){
+            adapterAdapterEditing.remove(selectedUsersAdapterEditing.get(i));
+        }
+        // снимаем все ранее установленные отметки
+        usersListAdapterEditing.clearChoices();
+        // очищаем массив выбраных объектов
+        selectedUsersAdapterEditing.clear();
+
+        adapterAdapterEditing.notifyDataSetChanged();
+    }
+
 
     public void imageLayout(Bundle bundle) {
         ConstraintLayout constraintLayout = new ConstraintLayout(this);
