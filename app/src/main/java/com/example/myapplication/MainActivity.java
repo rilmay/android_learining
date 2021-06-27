@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void arrayAdapterLayout(Bundle bundle) {
         setContentView(R.layout.array_adapter_testing);
+        // получаем элемент TextView
+        TextView selection = (TextView) findViewById(R.id.selection);
 
         // получаем элемент ListView
         ListView countriesList = (ListView) findViewById(R.id.countriesList);
@@ -109,6 +112,17 @@ public class MainActivity extends AppCompatActivity {
 
         // устанавливаем для списка адаптер
         countriesList.setAdapter(adapter);
+
+        countriesList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                TextView textView = (TextView) v;
+                String selectedItem = (String)textView.getText();
+                // установка текста элемента TextView
+                selection.setText(selectedItem);
+            }
+        });
     }
 
     public void imageLayout(Bundle bundle) {
