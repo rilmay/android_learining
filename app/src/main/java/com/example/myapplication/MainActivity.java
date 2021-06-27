@@ -96,13 +96,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void arrayAdapterLayout(Bundle bundle) {
         setContentView(R.layout.array_adapter_testing);
-        ListView listView = (ListView) findViewById(R.id.countriesList);
+
+        // получаем элемент ListView
+        ListView countriesList = (ListView) findViewById(R.id.countriesList);
+
+        // получаем ресурс
+        String[] countries = getResources().getStringArray(R.array.countries);
+
         // создаем адаптер
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, countries);
 
         // устанавливаем для списка адаптер
-        listView.setAdapter(adapter);
+        countriesList.setAdapter(adapter);
     }
 
     public void imageLayout(Bundle bundle) {
