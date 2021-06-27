@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,7 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    List<String> countries = new ArrayList<>(Arrays.asList("США", "Россия"));
+    List<String> countries = new ArrayList<>(Arrays.asList("Бразилия","Аргентина","Колумбия","Чили","Уругвай"));
 
     int clicks = 0;
     @Override
@@ -117,10 +118,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
-                TextView textView = (TextView) v;
-                String selectedItem = (String)textView.getText();
+                SparseBooleanArray selected=countriesList.getCheckedItemPositions();
+
+                String selectedItems="";
+                for(int i=0;i < countries.length;i++)
+                {
+                    if(selected.get(i))
+                        selectedItems+=countries[i]+",";
+                }
                 // установка текста элемента TextView
-                selection.setText(selectedItem);
+                selection.setText("Выбрано: " + selectedItems);
             }
         });
     }
