@@ -33,6 +33,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.myapplication.entity.State;
+import com.example.myapplication.entity.StateAdapter;
 import com.example.myapplication.entity.User;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrayAdapterEditing(savedInstanceState);
+        adapterWithImagesLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -95,6 +97,40 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    ArrayList<State> states = new ArrayList();
+    ListView countriesList;
+    protected void adapterWithImagesLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.countries_list_with_images);
+        // начальная инициализация списка
+        setInitialData();
+        // получаем элемент ListView
+        countriesList = (ListView) findViewById(R.id.countriesList);
+        // создаем адаптер
+        StateAdapter stateAdapter = new StateAdapter(this, R.layout.adapter_list_item, states);
+        // устанавливаем адаптер
+        countriesList.setAdapter(stateAdapter);
+        // слушатель выбора в списке
+        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                // получаем выбранный пункт
+                State selectedState = (State)parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(), "Был выбран пункт " + selectedState.getName(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+        countriesList.setOnItemClickListener(itemListener);
+    }
+    private void setInitialData(){
+
+        states.add(new State ("Бразилия", "Бразилиа", R.drawable.ic_launcher_foreground));
+        states.add(new State ("Аргентина", "Буэнос-Айрес", R.drawable.ic_launcher_foreground));
+        states.add(new State ("Колумбия", "Богота", R.drawable.ic_launcher_foreground));
+        states.add(new State ("Уругвай", "Монтевидео", R.drawable.ic_launcher_foreground));
+        states.add(new State ("Чили", "Сантьяго", R.drawable.ic_launcher_foreground));
     }
 
     public void arrayAdapterLayout(Bundle bundle) {
