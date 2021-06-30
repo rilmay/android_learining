@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,15 +41,28 @@ public class StateAdapter extends ArrayAdapter<State> {
         viewHolder.nameView.setText(state.getName());
         viewHolder.capitalView.setText(state.getCapital());
 
+        viewHolder.count.setText(state.getCount() + "");
+        viewHolder.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = state.getCount() + 1;
+                state.setCount(count);
+                viewHolder.count.setText(count + "");
+            }
+        });
+
         return convertView;
     }
     private class ViewHolder {
         final ImageView imageView;
-        final TextView nameView, capitalView;
+        final TextView nameView, capitalView, count;
+        final Button plus;
         ViewHolder(View view){
             imageView = (ImageView)view.findViewById(R.id.flag);
             nameView = (TextView) view.findViewById(R.id.name);
             capitalView = (TextView) view.findViewById(R.id.capital);
+            count = (TextView) view.findViewById(R.id.count);
+            plus = (Button) view.findViewById(R.id.plus);
         }
     }
 }

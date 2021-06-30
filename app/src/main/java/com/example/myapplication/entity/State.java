@@ -5,12 +5,14 @@ public class State {
     private String name; // название
     private String capital;  // столица
     private int flagResource; // ресурс флага
+    private int count;
 
-    public State(String name, String capital, int flag){
+    public State(String name, String capital, int flag, int count){
 
         this.name=name;
         this.capital=capital;
         this.flagResource=flag;
+        this.count = count;
     }
 
     public String getName() {
@@ -35,5 +37,13 @@ public class State {
 
     public void setFlagResource(int flagResource) {
         this.flagResource = flagResource;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

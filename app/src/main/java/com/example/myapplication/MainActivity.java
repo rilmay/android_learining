@@ -126,11 +126,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setInitialData(){
 
-        states.add(new State ("Бразилия", "Бразилиа", R.drawable.ic_launcher_foreground));
-        states.add(new State ("Аргентина", "Буэнос-Айрес", R.drawable.ic_launcher_foreground));
-        states.add(new State ("Колумбия", "Богота", R.drawable.ic_launcher_foreground));
-        states.add(new State ("Уругвай", "Монтевидео", R.drawable.ic_launcher_foreground));
-        states.add(new State ("Чили", "Сантьяго", R.drawable.ic_launcher_foreground));
+        states.add(new State ("Бразилия", "Бразилиа", R.drawable.ic_launcher_foreground,0));
+        states.add(new State ("Аргентина", "Буэнос-Айрес", R.drawable.ic_launcher_foreground,0));
+        states.add(new State ("Колумбия", "Богота", R.drawable.ic_launcher_foreground,0));
+        states.add(new State ("Уругвай", "Монтевидео", R.drawable.ic_launcher_foreground,0));
+        states.add(new State ("Чили", "Сантьяго", R.drawable.ic_launcher_foreground,0));
     }
 
     public void arrayAdapterLayout(Bundle bundle) {
