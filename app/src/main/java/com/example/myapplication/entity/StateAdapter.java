@@ -13,7 +13,6 @@ import com.example.myapplication.R;
 import java.util.List;
 
 public class StateAdapter extends ArrayAdapter<State> {
-
     private LayoutInflater inflater;
     private int layout;
     private List<State> states;
@@ -26,18 +25,30 @@ public class StateAdapter extends ArrayAdapter<State> {
     }
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View view=inflater.inflate(this.layout, parent, false);
-
-        ImageView flagView = (ImageView) view.findViewById(R.id.flag);
-        TextView nameView = (TextView) view.findViewById(R.id.name);
-        TextView capitalView = (TextView) view.findViewById(R.id.capital);
-
+        ViewHolder viewHolder;
+        if(convertView==null){
+            convertView = inflater.inflate(this.layout, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        }
+        else{
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
         State state = states.get(position);
 
-        flagView.setImageResource(state.getFlagResource());
-        nameView.setText(state.getName());
-        capitalView.setText(state.getCapital());
+        viewHolder.imageView.setImageResource(state.getFlagResource());
+        viewHolder.nameView.setText(state.getName());
+        viewHolder.capitalView.setText(state.getCapital());
 
-        return view;
+        return convertView;
+    }
+    private class ViewHolder {
+        final ImageView imageView;
+        final TextView nameView, capitalView;
+        ViewHolder(View view){
+            imageView = (ImageView)view.findViewById(R.id.flag);
+            nameView = (TextView) view.findViewById(R.id.name);
+            capitalView = (TextView) view.findViewById(R.id.capital);
+        }
     }
 }
