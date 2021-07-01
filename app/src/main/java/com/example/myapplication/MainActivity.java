@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapterWithImagesLayout(savedInstanceState);
+        toListActivityViewLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -636,5 +636,14 @@ public class MainActivity extends AppCompatActivity {
         else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void toListActivityViewLayout(Bundle bundle) {
+        setContentView(R.layout.to_list_view_activity);
+    }
+
+    public void toListViewActivity(View view) {
+        Intent intent = new Intent(this, ListViewActivity.class);
+        startActivity(intent);
     }
 }
