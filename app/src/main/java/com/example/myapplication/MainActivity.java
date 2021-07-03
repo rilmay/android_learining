@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        autocompleteLayout(savedInstanceState);
+        gridLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -693,5 +694,25 @@ public class MainActivity extends AppCompatActivity {
         autoCompleteMulti.setAdapter(adapter);
         // установка запятой в качестве разделителя
         autoCompleteMulti.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+    }
+
+    public void gridLayout(Bundle bundle) {
+        setContentView(R.layout.gridview_testing);
+
+        // получаем элемент GridView
+        GridView countriesList = (GridView) findViewById(R.id.gridview);
+        // создаем адаптер
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        countriesList.setAdapter(adapter);
+
+        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),"Вы выбрали "
+                                + parent.getItemAtPosition(position).toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+        countriesList.setOnItemClickListener(itemListener);
     }
 }
