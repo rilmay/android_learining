@@ -20,12 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        spinnerLayout(savedInstanceState);
+        autocompleteLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -673,5 +675,23 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         spinner.setOnItemSelectedListener(itemSelectedListener);
+    }
+
+    String[] cities = new String[]{"New Yorke", "Moscow", "Warsaw"};
+
+    public void autocompleteLayout(Bundle bundle) {
+        setContentView(R.layout.autocoplete_testing);
+        // Получаем ссылку на элемент AutoCompleteTextView в разметке
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
+        // Создаем адаптер для автозаполнения элемента AutoCompleteTextView
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, cities);
+        autoCompleteTextView.setAdapter(adapter);
+
+        MultiAutoCompleteTextView autoCompleteMulti = (MultiAutoCompleteTextView) findViewById(R.id.autocomplete_multi);
+        // Создаем адаптер для автозаполнения элемента AutoCompleteTextView
+        autoCompleteMulti.setAdapter(adapter);
+        // установка запятой в качестве разделителя
+        autoCompleteMulti.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 }
