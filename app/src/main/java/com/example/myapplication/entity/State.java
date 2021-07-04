@@ -7,6 +7,13 @@ public class State {
     private int flagResource; // ресурс флага
     private int count;
 
+    public State(String name, String capital, int flag){
+        this.name=name;
+        this.capital=capital;
+        this.flagResource=flag;
+        this.count=0;
+    }
+
     public State(String name, String capital, int flag, int count){
 
         this.name=name;

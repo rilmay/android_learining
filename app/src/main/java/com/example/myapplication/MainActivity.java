@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -37,6 +38,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.myapplication.entity.RecycledAdapter;
 import com.example.myapplication.entity.State;
 import com.example.myapplication.entity.StateAdapter;
 import com.example.myapplication.entity.User;
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gridLayout(savedInstanceState);
+        recycledAdapterLayout(savedInstanceState);
     }
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
@@ -714,5 +716,18 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         countriesList.setOnItemClickListener(itemListener);
+    }
+
+
+
+    public void recycledAdapterLayout(Bundle bundle) {
+        setContentView(R.layout.recyclerview_adapter);
+        // начальная инициализация списка
+        setInitialData();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        // создаем адаптер
+        RecycledAdapter adapter = new RecycledAdapter(this, states);
+        // устанавливаем для списка адаптер
+        recyclerView.setAdapter(adapter);
     }
 }
