@@ -724,9 +724,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.recyclerview_adapter);
         // начальная инициализация списка
         setInitialData();
+        TextView selectedState = (TextView) findViewById(R.id.selected_state);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        RecycledAdapter.OnStateClickListener listener = new RecycledAdapter.OnStateClickListener(){
+            @Override
+            public void onStateClick(State state, int position) {
+                selectedState.setText(state.getCapital());
+            }
+        };
         // создаем адаптер
-        RecycledAdapter adapter = new RecycledAdapter(this, states);
+        RecycledAdapter adapter = new RecycledAdapter(this, states, listener);
         // устанавливаем для списка адаптер
         recyclerView.setAdapter(adapter);
     }

@@ -19,7 +19,19 @@ public class RecycledAdapter  extends RecyclerView.Adapter<RecycledAdapter.ViewH
     private final LayoutInflater inflater;
     private final List<State> states;
 
+    public interface OnStateClickListener{
+        void onStateClick(State state, int position);
+    }
+
+    private OnStateClickListener onClickListener;
+
     public RecycledAdapter(Context context, List<State> states) {
+        this.states = states;
+        this.inflater = LayoutInflater.from(context);
+    }
+
+    public RecycledAdapter(Context context, List<State> states, OnStateClickListener onClickListener) {
+        this.onClickListener = onClickListener;
         this.states = states;
         this.inflater = LayoutInflater.from(context);
     }
@@ -45,6 +57,13 @@ public class RecycledAdapter  extends RecyclerView.Adapter<RecycledAdapter.ViewH
                 int count = state.getCount() + 1;
                 state.setCount(count);
                 holder.count.setText(count + "");
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.onStateClick(state, position);
             }
         });
 
