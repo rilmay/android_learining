@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_settings"
+            android:title="Настройки"
+            android:checked="true" />
+        <item android:id="@+id/save_settings"
+            android:title="Сохранить" />
+        <item android:id="@+id/open_settings"
+            android:title="Открыть"  />
+    </group>
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="1"
-        android:title="Настройки" />
+        android:id="@+id/action_settings2"
+        android:title="Настройки">
+        <menu>
+            <item android:id="@+id/save_settings2"
+                android:title="Сохранить" />
+            <item android:id="@+id/open_settings2"
+                android:title="Открыть" />
+        </menu>
+
+    </item>
     <item
-        android:id="@+id/save_settings"
-        android:orderInCategory="3"
-        android:title="Сохранить" />
-    <item
-        android:id="@+id/open_settings"
-        android:orderInCategory="2"
-        android:title="Открыть" />
+        android:id="@+id/action_move"
+        android:title="Переход">
+        <menu>
+            <item android:id="@+id/forward"
+                android:title="Вперед" />
+            <item android:id="@+id/back"
+                android:title="Назад" />
+        </menu>
+
+    </item>
 </menu>

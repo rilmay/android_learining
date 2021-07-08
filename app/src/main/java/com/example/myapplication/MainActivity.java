@@ -72,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         menu.add("еще один");
+        menu.add(1        // Группа
+                ,1        // id
+                ,0        //порядок
+                ,"Создать");  // заголовок
         return true;
     }
 
