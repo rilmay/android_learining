@@ -17,6 +17,8 @@ import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -59,8 +61,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recycledAdapterLayout(savedInstanceState);
+        menuTitleLayout(savedInstanceState);
     }
+
+    public void menuTitleLayout(Bundle bundle) {
+        setContentView(R.layout.menu_title_layout);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        menu.add("еще один");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        TextView headerView = (TextView) findViewById(R.id.selectedMenuItem);
+        switch(id){
+            case R.id.action_settings :
+                headerView.setText("Настройки");
+                return true;
+            case R.id.open_settings:
+                headerView.setText("Открыть");
+                return true;
+            case R.id.save_settings:
+                headerView.setText("Сохранить");
+                return true;
+            default:
+                headerView.setText(item.getTitle());
+                return true;
+        }
+    }
+
     // Метод обработки нажатия на кнопку
     public void sendMessage(View view) {
         // действия, совершаемые после нажатия на кнопку
