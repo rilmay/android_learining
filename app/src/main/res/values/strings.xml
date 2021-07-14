@@ -9,4 +9,6 @@
     </string-array>
 
     <string name="second_activity_button_label">you are in second activity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

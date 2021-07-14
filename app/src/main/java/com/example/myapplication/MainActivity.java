@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        menuTitleLayout(savedInstanceState);
+        fragmentContainerProgrammableLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -774,5 +774,18 @@ public class MainActivity extends AppCompatActivity {
         RecycledAdapter adapter = new RecycledAdapter(this, states, listener);
         // устанавливаем для списка адаптер
         recyclerView.setAdapter(adapter);
+    }
+
+    public void fragmentContainerLayout(Bundle bundle) {
+        setContentView(R.layout.fragment_container);
+    }
+
+    public void fragmentContainerProgrammableLayout(Bundle bundle) {
+        setContentView(R.layout.fragment_container_programmable);
+        if (bundle == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container_view, ContentFragment.class, null)
+                    .commit();
+        }
     }
 }
