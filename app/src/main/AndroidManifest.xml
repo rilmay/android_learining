@@ -16,6 +16,7 @@
         <activity android:name=".LinearLayoutTesting" />
         <activity android:name=".UiTesting" />
         <activity android:name=".MessageActivity" />
+        <activity android:name=".FragmentActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

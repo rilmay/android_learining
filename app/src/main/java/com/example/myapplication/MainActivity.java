@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentContainerProgrammableLayout(savedInstanceState);
+        buttonToFragmentLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -787,5 +787,14 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragment_container_view, ContentFragment.class, null)
                     .commit();
         }
+    }
+
+    public void toFragmentActivity(View view) {
+        Intent intent = new Intent(this, FragmentActivity.class);
+        startActivity(intent);
+    }
+
+    public void buttonToFragmentLayout(Bundle bundle) {
+        setContentView(R.layout.button_to_fragment_activity);
     }
 }
