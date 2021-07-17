@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        buttonToFragmentLayout(savedInstanceState);
+        programmableWebView(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -796,5 +797,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonToFragmentLayout(Bundle bundle) {
         setContentView(R.layout.button_to_fragment_activity);
+    }
+
+    public void WebViewLayout(Bundle bundle) {
+        setContentView(R.layout.web_view_layout);
+
+        WebView browser=(WebView)findViewById(R.id.webBrowser);
+        browser.loadUrl("https://metanit.com");
+    }
+
+    public void programmableWebView(Bundle bundle) {
+        WebView browser = new WebView(this);
+        setContentView(browser);
+        browser.loadData("<html><body><h2>Hello, Android!</h2></body></html>", "text/html", "UTF-8");
     }
 }
