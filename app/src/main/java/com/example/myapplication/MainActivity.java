@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.icu.util.BuddhistCalendar;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +34,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -41,6 +43,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.VideoView;
 
 import com.example.myapplication.entity.RecycledAdapter;
 import com.example.myapplication.entity.State;
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        httpTestingLayout(savedInstanceState);
+        videoPlayerLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -888,5 +891,47 @@ public class MainActivity extends AppCompatActivity {
                 connection.disconnect();
             }
         }
+    }
+
+    VideoView videoPlayer;
+
+    protected void videoPlayerLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.videoplayer);
+
+        videoPlayer =  (VideoView)findViewById(R.id.videoPlayer);
+        if(false) {
+            Uri myVideoUri= Uri.parse( "android.resource://" + getPackageName() + "/" + R.raw.xxxtentacion);
+            videoPlayer.setVideoURI(myVideoUri);
+        } else {
+            videoPlayer.setVideoPath("https://r3---sn-4g5ednse.googlevideo.com/videoplayback?" +
+                    "expire=1626804604&ei=HL32YMPqJYLiW766p_AJ&ip=95.104.111.204&id=o-ADk2BcA1w-" +
+                    "u_ByGQxdOA5PnfasOsAR5fMvAemSdZ3Si-&itag=18&source=youtube&requiressl=yes&vpr" +
+                    "v=1&mime=video%2Fmp4&ns=sFDpoYcB4a_Rk9b-6Cnsc0MG&gir=yes&clen=55046594&" +
+                    "ratebypass=yes&dur=981.739&lmt=1626537260368221&fexp=24001373," +
+                    "24007246&c=WEB&txp=5530434&n=E3HcKf0FA2_nyEV&sparams" +
+                    "=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Cgir%" +
+                    "2Cclen%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRAIgIYy9d25GwfqSWwSpTjuYp6dtFa" +
+                    "CiuqsdeqvwFBZfjW0CIH4FoKfS1a52Q2GS1-axTTFPyTmO_mUzY0cxAc4E-y01&rm=sn-h5bup" +
+                    "jvh-c0ne7s,sn-nv4s67s&req_id=977ff412d184a3ee&redirect_counter=2&cms_redi" +
+                    "rect=yes&ipbypass=yes&mh=b2&mip=46.53.251.230&mm=29&mn=sn-4g5ednse&ms=rdu" +
+                    "&mt=1626782682&mv=m&mvi=3&pl=24&lsparams=ipbypass,mh,mip,mm,mn,ms,mv,mvi," +
+                    "pl&lsig=AG3C_xAwRgIhAPmW28xh4ez5kfXAImY6ECdxtGN_qbFOcCoMCqKUoggFAiEAgJS3M" +
+                    "Rdbyv-wtqqljfSRq65rFDUyJRmbPUtiiPW9h-Y%3D");
+        }
+
+        MediaController mediaController = new MediaController(this);
+        videoPlayer.setMediaController(mediaController);
+        mediaController.setMediaPlayer(videoPlayer);
+    }
+
+    public void play(View view){
+        videoPlayer.start();
+    }
+    public void pause(View view){
+        videoPlayer.pause();
+    }
+    public void stop(View view){
+        videoPlayer.stopPlayback();
+        videoPlayer.resume();
     }
 }
