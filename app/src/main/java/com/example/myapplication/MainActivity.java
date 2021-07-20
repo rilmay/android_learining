@@ -5,16 +5,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.icu.util.BuddhistCalendar;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        videoPlayerLayout(savedInstanceState);
+        audioPlayerLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -933,5 +934,86 @@ public class MainActivity extends AppCompatActivity {
     public void stop(View view){
         videoPlayer.stopPlayback();
         videoPlayer.resume();
+    }
+
+    MediaPlayer mPlayer;
+    Button playButton, pauseButton, stopButton;
+    protected void audioPlayerLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.audioplayer);
+
+        mPlayer= MediaPlayer.create(this, R.raw.korzh);
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                stopPlay();
+            }
+        });
+        playButton = (Button) findViewById(R.id.playButton);
+        pauseButton = (Button) findViewById(R.id.pauseButton);
+        stopButton = (Button) findViewById(R.id.stopButton);
+
+        pauseButton.setEnabled(false);
+        stopButton.setEnabled(false);
+
+
+
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+        SeekBar volumeControl = (SeekBar) findViewById(R.id.volumeControl);
+        volumeControl.setMax(maxVolume);
+        volumeControl.setProgress(curValue);
+        volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+    private void stopPlay(){
+        mPlayer.stop();
+        pauseButton.setEnabled(false);
+        stopButton.setEnabled(false);
+        try {
+            mPlayer.prepare();
+            mPlayer.seekTo(0);
+            playButton.setEnabled(true);
+        }
+        catch (Throwable t) {
+            Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void playAudio(View view){
+
+        mPlayer.start();
+        playButton.setEnabled(false);
+        pauseButton.setEnabled(true);
+        stopButton.setEnabled(true);
+    }
+    public void pauseAudio(View view){
+
+        mPlayer.pause();
+        playButton.setEnabled(true);
+        pauseButton.setEnabled(false);
+        stopButton.setEnabled(true);
+    }
+    public void stopAudio(View view){
+        stopPlay();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            stopPlay();
+        }
     }
 }
