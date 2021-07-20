@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        audioPlayerLayout(savedInstanceState);
+        saveTestingLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1015,5 +1015,49 @@ public class MainActivity extends AppCompatActivity {
         if (mPlayer != null && mPlayer.isPlaying()) {
             stopPlay();
         }
+    }
+
+    String name ="undefined";
+
+
+    final static String nameVariableKey = "NAME_VARIABLE";
+    final static String textViewTexKey = "TEXTVIEW_TEXT";
+
+    // сохранение состояния
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putString(nameVariableKey, name);
+        TextView nameView = (TextView) findViewById(R.id.nameView);
+        outState.putString(textViewTexKey, nameView.getText().toString());
+
+        super.onSaveInstanceState(outState);
+    }
+    // получение ранее сохраненного состояния
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        name = savedInstanceState.getString(nameVariableKey);
+        String textViewText= savedInstanceState.getString(textViewTexKey);
+        TextView nameView = (TextView) findViewById(R.id.nameView);
+        nameView.setText(textViewText);
+    }
+
+    protected void saveTestingLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.save_state_testing);
+    }
+
+    public void saveName(View view) {
+
+        // получаем введенное имя
+        EditText nameBox = (EditText) findViewById(R.id.nameBox);
+        name = nameBox.getText().toString();
+    }
+    public void getName(View view) {
+
+        // получаем сохраненное имя
+        TextView nameView = (TextView) findViewById(R.id.nameView);
+        nameView.setText(name);
     }
 }
