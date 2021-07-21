@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -1027,17 +1028,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
-        outState.putString(nameVariableKey, name);
-        TextView nameView = (TextView) findViewById(R.id.nameView);
-        outState.putString(textViewTexKey, nameView.getText().toString());
 
         super.onSaveInstanceState(outState);
     }
+
+    public void onSaveInstanceRotation(Bundle outState) {
+
+        outState.putString(nameVariableKey, name);
+        TextView nameView = (TextView) findViewById(R.id.nameView);
+        outState.putString(textViewTexKey, nameView.getText().toString());
+    }
+
     // получение ранее сохраненного состояния
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
 
+    protected void onRestoreInstanceStateRotation(Bundle savedInstanceState) {
         name = savedInstanceState.getString(nameVariableKey);
         String textViewText= savedInstanceState.getString(textViewTexKey);
         TextView nameView = (TextView) findViewById(R.id.nameView);
@@ -1046,18 +1054,63 @@ public class MainActivity extends AppCompatActivity {
 
     protected void saveTestingLayout(Bundle savedInstanceState) {
         setContentView(R.layout.save_state_testing);
+        settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
     }
 
     public void saveName(View view) {
+        saveNameSP(view);
+    }
 
+    public void saveNameRotation(View view) {
         // получаем введенное имя
         EditText nameBox = (EditText) findViewById(R.id.nameBox);
         name = nameBox.getText().toString();
     }
-    public void getName(View view) {
 
+    public void getName(View view) {
+        getNameSP(view);
+    }
+
+    public void getNameRotation(View view) {
         // получаем сохраненное имя
         TextView nameView = (TextView) findViewById(R.id.nameView);
         nameView.setText(name);
+    }
+
+
+    private static final String PREFS_FILE = "Account";
+    private static final String PREF_NAME = "Name";
+    SharedPreferences settings;
+
+
+    public void saveNameSP(View view) {
+        // получаем введенное имя
+        EditText nameBox = (EditText) findViewById(R.id.nameBox);
+        String name = nameBox.getText().toString();
+        // сохраняем его в настройках
+        SharedPreferences.Editor prefEditor = settings.edit();
+        prefEditor.putString(PREF_NAME, name);
+        prefEditor.apply();
+    }
+
+    public void getNameSP(View view) {
+        // получаем сохраненное имя
+        TextView nameView = (TextView) findViewById(R.id.nameView);
+        String name = settings.getString(PREF_NAME,"не определено");
+        nameView.setText(name);
+    }
+
+
+    SharedPreferences.Editor prefEditor;
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        EditText nameBox = (EditText) findViewById(R.id.nameBox);
+        String name = nameBox.getText().toString();
+        // сохраняем в настройках
+        prefEditor = settings.edit();
+        prefEditor.putString(PREF_NAME, name);
+        prefEditor.apply();
     }
 }
