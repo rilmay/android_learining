@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        saveTestingLayout(savedInstanceState);
+        settingsLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1105,12 +1106,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
+    }
 
+    public void onPausePrefEditor(){
         EditText nameBox = (EditText) findViewById(R.id.nameBox);
         String name = nameBox.getText().toString();
         // сохраняем в настройках
         prefEditor = settings.edit();
         prefEditor.putString(PREF_NAME, name);
         prefEditor.apply();
+
+    }
+
+    public void settingsLayout(Bundle bundle) {
+        setContentView(R.layout.button_to_settings);
+        settingsText = (TextView) findViewById(R.id.settingsText);
+    }
+
+    TextView settingsText;
+    boolean enabled;
+    String login;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
+        enabled = prefs.getBoolean("enabled", false);
+        login = prefs.getString("login", "не установлено");
+        settingsText.setText(login);
+        if(enabled)
+            settingsText.setVisibility(View.VISIBLE);
+        else
+            settingsText.setVisibility(View.INVISIBLE);
+    }
+
+    public void setPrefs(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
