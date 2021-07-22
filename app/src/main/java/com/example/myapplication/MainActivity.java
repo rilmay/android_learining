@@ -55,6 +55,8 @@ import com.example.myapplication.entity.User;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        settingsLayout(savedInstanceState);
+        filesystemLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1130,6 +1132,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    public void sharedPrefsResume() {
+
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         enabled = prefs.getBoolean("enabled", false);
         login = prefs.getString("login", "не установлено");
@@ -1143,5 +1149,67 @@ public class MainActivity extends AppCompatActivity {
     public void setPrefs(View view){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+
+    private final static String FILE_NAME = "content.txt";
+
+    protected void filesystemLayout(Bundle savedInstanceState) {
+        setContentView(R.layout.filesystem_saving);
+    }
+    // сохранение файла
+    public void saveText(View view){
+
+        FileOutputStream fos = null;
+        try {
+            EditText textBox = (EditText) findViewById(R.id.editor);
+            String text = textBox.getText().toString();
+
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+            Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
+        }
+        catch(IOException ex) {
+
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+            try{
+                if(fos!=null)
+                    fos.close();
+            }
+            catch(IOException ex){
+
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    // открытие файла
+    public void openText(View view){
+
+        FileInputStream fin = null;
+        TextView textView = (TextView) findViewById(R.id.text);
+        try {
+            fin = openFileInput(FILE_NAME);
+            byte[] bytes = new byte[fin.available()];
+            fin.read(bytes);
+            String text = new String (bytes);
+            textView.setText(text);
+        }
+        catch(IOException ex) {
+
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+
+            try{
+                if(fin!=null)
+                    fin.close();
+            }
+            catch(IOException ex){
+
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
