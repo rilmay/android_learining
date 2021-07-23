@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sqlIntroductionLayout(savedInstanceState);
+        startDatabaseActivity(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1300,5 +1300,10 @@ public class MainActivity extends AppCompatActivity {
         }
         query.close();
         db.close();
+    }
+
+    public void startDatabaseActivity(Bundle bundle) {
+        Intent intent = new Intent(this, DatabaseActivity.class);
+        startActivity(intent);
     }
 }
