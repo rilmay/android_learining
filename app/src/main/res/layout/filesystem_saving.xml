@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:onClick="saveText"
+        android:onClick="saveTextExternal"
         android:text="Сохранить"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -42,7 +42,7 @@
         android:id="@+id/open_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="openText"
+        android:onClick="openTextExternal"
         android:text="Открыть"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

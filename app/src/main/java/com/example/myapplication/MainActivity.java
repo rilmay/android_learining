@@ -55,6 +55,7 @@ import com.example.myapplication.entity.User;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1184,6 +1185,39 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private File getExternalPath() {
+        return new File(getExternalFilesDir(null), FILE_NAME);
+    }
+
+    public void saveTextExternal(View view){
+
+        FileOutputStream fos = null;
+        try {
+
+            EditText textBox = (EditText) findViewById(R.id.editor);
+            String text = textBox.getText().toString();
+
+            fos = new FileOutputStream(getExternalPath());
+            fos.write(text.getBytes());
+            Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
+        }
+        catch(IOException ex) {
+
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+            try{
+                if(fos!=null)
+                    fos.close();
+            }
+            catch(IOException ex){
+
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     // открытие файла
     public void openText(View view){
 
@@ -1191,6 +1225,37 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.text);
         try {
             fin = openFileInput(FILE_NAME);
+            byte[] bytes = new byte[fin.available()];
+            fin.read(bytes);
+            String text = new String (bytes);
+            textView.setText(text);
+        }
+        catch(IOException ex) {
+
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+
+            try{
+                if(fin!=null)
+                    fin.close();
+            }
+            catch(IOException ex){
+
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    // открытие файла
+    public void openTextExternal(View view){
+
+        FileInputStream fin = null;
+        TextView textView = (TextView) findViewById(R.id.text);
+        File file = getExternalPath();
+        // если файл не существует, выход из метода
+        if(!file.exists()) return;
+        try {
+            fin =  new FileInputStream(file);
             byte[] bytes = new byte[fin.available()];
             fin.read(bytes);
             String text = new String (bytes);
