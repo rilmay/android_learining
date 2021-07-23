@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filesystemLayout(savedInstanceState);
+        sqlIntroductionLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1276,5 +1278,27 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void sqlIntroductionLayout(Bundle bundle) {
+        setContentView(R.layout.sql_introduction);
+    }
+
+
+    public void onClickSqlIntro(View view){
+        SQLiteDatabase db = getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS users (name TEXT, age INTEGER)");
+        db.execSQL("INSERT INTO users VALUES ('Tom Smith', 23);");
+        db.execSQL("INSERT INTO users VALUES ('John Dow', 31);");
+
+        Cursor query = db.rawQuery("SELECT * FROM users;", null);
+        TextView textView = (TextView) findViewById(R.id.textView);
+        while(query.moveToNext()){
+            String name = query.getString(0);
+            int age = query.getInt(1);
+            textView.append("Name: " + name + " Age: " + age + "\n");
+        }
+        query.close();
+        db.close();
     }
 }
