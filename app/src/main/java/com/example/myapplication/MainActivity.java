@@ -43,6 +43,7 @@ import android.widget.MediaController;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startDatabaseActivity(savedInstanceState);
+        toUserActivityLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1019,6 +1020,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        userActivityOnDestroy();
         if (mPlayer != null && mPlayer.isPlaying()) {
             stopPlay();
         }
@@ -1135,6 +1137,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        userActivityOnResume();
     }
 
     public void sharedPrefsResume() {
@@ -1304,6 +1307,55 @@ public class MainActivity extends AppCompatActivity {
 
     public void startDatabaseActivity(Bundle bundle) {
         Intent intent = new Intent(this, DatabaseActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    ListView userList;
+    DatabaseHelper databaseHelper;
+    SQLiteDatabase db;
+    Cursor userCursor;
+    SimpleCursorAdapter userAdapter;
+    public void toUserActivityLayout(Bundle bundle) {
+        setContentView(R.layout.to_user_activity);
+        userList = (ListView) findViewById(R.id.list);
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
+
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+    }
+
+    private void userActivityOnResume() {
+
+        // открываем подключение
+        db = databaseHelper.getReadableDatabase();
+
+        //получаем данные из бд в виде курсора
+        userCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE, null);
+        // определяем, какие столбцы из курсора будут выводиться в ListView
+        String[] headers = new String[]{DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR};
+        // создаем адаптер, передаем в него курсор
+        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
+        userList.setAdapter(userAdapter);
+    }
+    private void userActivityOnDestroy() {
+
+        // Закрываем подключение и курсор
+        db.close();
+        userCursor.close();
+    }
+
+    // по нажатию на кнопку запускаем UserActivity для добавления данных
+    public void add(View view) {
+        Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
     }
 }
