@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -36,6 +37,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toUserActivityLayout(savedInstanceState);
+        userFinderLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1020,7 +1022,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        userActivityOnDestroy();
+        userFinderOnDestroy();
         if (mPlayer != null && mPlayer.isPlaying()) {
             stopPlay();
         }
@@ -1137,7 +1139,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        userActivityOnResume();
+        userFinderOnResume();
     }
 
     public void sharedPrefsResume() {
@@ -1313,6 +1315,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     ListView userList;
+    EditText userFilter;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor userCursor;
@@ -1334,8 +1337,70 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper.create_db();
     }
 
+    public void userFinderLayout(Bundle bundle) {
+        setContentView(R.layout.finder_layout);
+        userList = (ListView)findViewById(R.id.userList);
+        userFilter = (EditText)findViewById(R.id.userFilter);
+
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        // создаем базу данных
+        databaseHelper.create_db();
+    }
+
+
+    public void userFinderOnResume() {
+        try {
+            db = databaseHelper.open();
+            userCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE, null);
+            String[] headers = new String[]{DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR};
+            userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                    userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
+
+            // если в текстовом поле есть текст, выполняем фильтрацию
+            // данная проверка нужна при переходе от одной ориентации экрана к другой
+            if(!userFilter.getText().toString().isEmpty())
+                userAdapter.getFilter().filter(userFilter.getText().toString());
+
+            // установка слушателя изменения текста
+            userFilter.addTextChangedListener(new TextWatcher() {
+
+                public void afterTextChanged(Editable s) { }
+
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                // при изменении текста выполняем фильтрацию
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    userAdapter.getFilter().filter(s.toString());
+                }
+            });
+
+            // устанавливаем провайдер фильтрации
+            userAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+                @Override
+                public Cursor runQuery(CharSequence constraint) {
+
+                    if (constraint == null || constraint.length() == 0) {
+
+                        return db.rawQuery("select * from " + DatabaseHelper.TABLE, null);
+                    }
+                    else {
+                        return db.rawQuery("select * from " + DatabaseHelper.TABLE + " where " +
+                                DatabaseHelper.COLUMN_NAME + " like ?", new String[]{"%" + constraint.toString() + "%"});
+                    }
+                }
+            });
+
+            userList.setAdapter(userAdapter);
+        }
+        catch (SQLException ex){}
+    }
+    public void userFinderOnDestroy(){
+        // Закрываем подключение и курсор
+        db.close();
+        userCursor.close();
+    }
+
     private void userActivityOnResume() {
-        super.onResume();
         // открываем подключение
         db = databaseHelper.open();
         //получаем данные из бд в виде курсора
