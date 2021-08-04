@@ -11,16 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.myapplication.entity.UserAge;
+
 public class UserActivity extends AppCompatActivity {
 
     EditText nameBox;
     EditText yearBox;
     Button delButton;
     Button saveButton;
-
-    DatabaseHelper sqlHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
+    DataBaseAdapter adapter;
     long userId=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +31,8 @@ public class UserActivity extends AppCompatActivity {
         delButton = (Button) findViewById(R.id.deleteButton);
         saveButton = (Button) findViewById(R.id.saveButton);
 
-        sqlHelper = new DatabaseHelper(this);
-        db = sqlHelper.open();
+        adapter = new DataBaseAdapter(this);
+        adapter.open();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -41,13 +40,10 @@ public class UserActivity extends AppCompatActivity {
         }
         // если 0, то добавление
         if (userId > 0) {
-            // получаем элемент по id из бд
-            userCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " where " +
-                    DatabaseHelper.COLUMN_ID + "=?", new String[]{String.valueOf(userId)});
-            userCursor.moveToFirst();
-            nameBox.setText(userCursor.getString(1));
-            yearBox.setText(String.valueOf(userCursor.getInt(2)));
-            userCursor.close();
+            UserAge userAge = adapter.getUser(userId);
+            nameBox.setText(userAge.getName());
+            yearBox.setText("" + userAge.getYear());
+            adapter.close();
         } else {
             // скрываем кнопку удаления
             delButton.setVisibility(View.GONE);
@@ -55,24 +51,26 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void save(View view){
+        UserAge userAge = new UserAge(nameBox.getText().toString(), Integer.parseInt(yearBox.getText().toString()));
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_NAME, nameBox.getText().toString());
         cv.put(DatabaseHelper.COLUMN_YEAR, Integer.parseInt(yearBox.getText().toString()));
 
         if (userId > 0) {
-            db.update(DatabaseHelper.TABLE, cv, DatabaseHelper.COLUMN_ID + "=" + String.valueOf(userId), null);
+            userAge.setId(userId);
+            adapter.update(userAge);
         } else {
-            db.insert(DatabaseHelper.TABLE, null, cv);
+            adapter.insert(userAge);
         }
         goHome();
     }
     public void delete(View view){
-        db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(userId)});
+        adapter.delete(userId);
         goHome();
     }
     private void goHome(){
         // закрываем подключение
-        db.close();
+        adapter.close();
         // переход к главной activity
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

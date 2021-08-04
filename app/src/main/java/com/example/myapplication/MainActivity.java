@@ -57,6 +57,7 @@ import com.example.myapplication.entity.RecycledAdapter;
 import com.example.myapplication.entity.State;
 import com.example.myapplication.entity.StateAdapter;
 import com.example.myapplication.entity.User;
+import com.example.myapplication.entity.UserAge;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
@@ -1341,6 +1342,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.finder_layout);
         userList = (ListView)findViewById(R.id.userList);
         userFilter = (EditText)findViewById(R.id.userFilter);
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
         // создаем базу данных
