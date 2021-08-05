@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
@@ -61,6 +62,8 @@ import com.example.myapplication.entity.StateAdapter;
 import com.example.myapplication.entity.User;
 import com.example.myapplication.entity.UserAge;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -1440,5 +1443,15 @@ public class MainActivity extends AppCompatActivity {
         ViewPager2 pager=(ViewPager2)findViewById(R.id.pager);
         FragmentStateAdapter pageAdapter = new PageScrollingAdapter(this);
         pager.setAdapter(pageAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        TabLayoutMediator tabLayoutMediator= new TabLayoutMediator(tabLayout, pager, new TabLayoutMediator.TabConfigurationStrategy(){
+
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText("Страница " + (position + 1));
+            }
+        });
+        tabLayoutMediator.attach();
     }
 }
