@@ -5,6 +5,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.content.Intent;
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userFinderLayout(savedInstanceState);
+        pageScrollingLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1023,7 +1025,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        userFinderOnDestroy();
         if (mPlayer != null && mPlayer.isPlaying()) {
             stopPlay();
         }
@@ -1140,7 +1141,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        userFinderOnResume();
     }
 
     public void sharedPrefsResume() {
@@ -1432,5 +1432,13 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
+    }
+
+    public void pageScrollingLayout(Bundle bundle) {
+        setContentView(R.layout.pagescrolling_layout);
+
+        ViewPager2 pager=(ViewPager2)findViewById(R.id.pager);
+        FragmentStateAdapter pageAdapter = new PageScrollingAdapter(this);
+        pager.setAdapter(pageAdapter);
     }
 }
