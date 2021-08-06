@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        datePickerDialogLayout(savedInstanceState);
+        customDialogLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1530,4 +1530,15 @@ public class MainActivity extends AppCompatActivity {
             setInitialDateTime();
         }
     };
+
+
+    public void customDialogLayout(Bundle bundle) {
+        setContentView(R.layout.show_custom_dialog);
+    }
+
+
+    public void showCustomDialog(View v) {
+        CustomDialogFragment dialog = new CustomDialogFragment();
+        dialog.show(getSupportFragmentManager(), "custom");
+    }
 }
