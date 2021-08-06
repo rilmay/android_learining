@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageScrollingLayout(savedInstanceState);
+        mediaServiceLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1453,5 +1453,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tabLayoutMediator.attach();
+    }
+
+    public void mediaServiceLayout(Bundle bundle) {
+        setContentView(R.layout.mediaservice_startstop);
+    }
+
+    public void mediaServiceClick(View view) {
+
+        MediaPlayer ambientMediaPlayer=MediaPlayer.create(this, R.raw.korzh);
+        ambientMediaPlayer.setLooping(true);
+        ambientMediaPlayer.start();
+
+        Intent i=new Intent(this, MediaService.class);
+        if (view.getId()==R.id.start) {
+            startService(i);
+        }
+        else {
+            stopService(i);
+        }
     }
 }
