@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        customDialogLayout(savedInstanceState);
+        phonesListLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1540,5 +1540,32 @@ public class MainActivity extends AppCompatActivity {
     public void showCustomDialog(View v) {
         CustomDialogFragment dialog = new CustomDialogFragment();
         dialog.show(getSupportFragmentManager(), "custom");
+    }
+
+    public void phonesListLayout(Bundle bundle) {
+        setContentView(R.layout.phones_list);
+
+        ListView phonesList = (ListView) findViewById(R.id.phonesList);
+        ArrayList<String> phones = new ArrayList<>();
+        phones.add("Google Pixel");
+        phones.add("Huawei P9");
+        phones.add("LG G5");
+        phones.add("Samsung Galaxy S8");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, phones);
+        phonesList.setAdapter(adapter);
+
+        phonesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedPhone = adapter.getItem(position);
+                CustomDialogPhones dialog = new CustomDialogPhones();
+                Bundle args = new Bundle();
+                args.putString("phone", selectedPhone);
+                dialog.setArguments(args);
+                dialog.show(getSupportFragmentManager(), "custom");
+            }
+        });
     }
 }
