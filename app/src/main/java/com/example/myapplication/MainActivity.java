@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        phonesListLayout(savedInstanceState);
+        animationLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1565,6 +1566,23 @@ public class MainActivity extends AppCompatActivity {
                 args.putString("phone", selectedPhone);
                 dialog.setArguments(args);
                 dialog.show(getSupportFragmentManager(), "custom");
+            }
+        });
+    }
+
+    public void animationLayout(Bundle bundle) {
+        setContentView(R.layout.animation_layout);
+        ImageView img = (ImageView)findViewById(R.id.animationView);
+        // устанавливаем ресурс анимации
+        img.setBackgroundResource(R.drawable.rel_animation);
+        // получаем объект анимации
+        AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
+        // по нажатию на ImageView
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // запускаем анимацию
+                frameAnimation.start();
             }
         });
     }
