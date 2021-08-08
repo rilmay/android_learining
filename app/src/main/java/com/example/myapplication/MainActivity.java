@@ -1560,7 +1560,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedPhone = adapter.getItem(position);
-                CustomDialogPhones dialog = new CustomDialogPhones();
+                CustomDialogPhones dialog = new CustomDialogPhones(new Removable.removableImpl(adapter));
                 Bundle args = new Bundle();
                 args.putString("phone", selectedPhone);
                 dialog.setArguments(args);
