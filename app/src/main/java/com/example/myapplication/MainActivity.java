@@ -36,6 +36,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        animationLayout(savedInstanceState);
+        animationLayout2(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1585,5 +1587,16 @@ public class MainActivity extends AppCompatActivity {
                 frameAnimation.start();
             }
         });
+    }
+
+    public void animationLayout2(Bundle bundle) {
+        setContentView(R.layout.animation_layout);
+        ImageView img = (ImageView)findViewById(R.id.animationView);
+        // определим для ImageView какое-нибудь изображение
+        img.setImageResource(R.drawable.rel);
+        // создаем анимацию
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.common_animation);
+        // запуск анимации
+        img.startAnimation(animation);
     }
 }
