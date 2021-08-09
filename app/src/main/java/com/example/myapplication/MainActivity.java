@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        animationLayout2(savedInstanceState);
+        toContactList(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1598,5 +1598,11 @@ public class MainActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.common_animation);
         // запуск анимации
         img.startAnimation(animation);
+    }
+
+    public void toContactList(Bundle bundle) {
+        Intent intent = new Intent(this, ContentViewActivity.class);
+        startActivity(intent);
+
     }
 }
