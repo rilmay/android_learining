@@ -11,6 +11,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +30,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toContactList(savedInstanceState);
+        toAppProviderLayout(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1604,5 +1607,72 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ContentViewActivity.class);
         startActivity(intent);
 
+    }
+
+
+    private static final String TAG = "MainActivity";
+
+    public void toAppProviderLayout(Bundle bundle) {
+        setContentView(R.layout.app_provider_layout);
+    }
+
+
+    // получение всех
+    public void getAllProvider(View view){
+        String[] projection = {
+                FriendsContract.Columns._ID,
+                FriendsContract.Columns.NAME,
+                FriendsContract.Columns.EMAIL,
+                FriendsContract.Columns.PHONE
+        };
+        ContentResolver contentResolver = getContentResolver();
+        Cursor cursor = contentResolver.query(FriendsContract.CONTENT_URI,
+                projection,
+                null,
+                null,
+                FriendsContract.Columns.NAME);
+        if(cursor != null){
+            Log.d(TAG, "count: " + cursor.getCount());
+            // перебор элементов
+            while(cursor.moveToNext()){
+                for(int i=0; i < cursor.getColumnCount(); i++){
+                    Log.d(TAG, cursor.getColumnName(i) + " : " + cursor.getString(i));
+                }
+                Log.d(TAG, "=========================");
+            }
+            cursor.close();
+        }
+        else{
+            Log.d(TAG, "Cursor is null");
+        }
+    }
+    // Добавление
+    public void addProvider(View view){
+        ContentResolver contentResolver = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(FriendsContract.Columns.NAME, "Sam");
+        values.put(FriendsContract.Columns.EMAIL, "sam@gmail.com");
+        values.put(FriendsContract.Columns.PHONE, "+13676254985");
+        Uri uri = contentResolver.insert(FriendsContract.CONTENT_URI, values);
+        Log.d(TAG, "Friend added");
+    }
+
+    // Обновление
+    public void updateProvider(View view){
+        ContentResolver contentResolver = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(FriendsContract.Columns.EMAIL, "sammy@gmail.com");
+        values.put(FriendsContract.Columns.PHONE, "+55555555555");
+        String selection = FriendsContract.Columns.NAME + " = 'Sam'";
+        int count = contentResolver.update(FriendsContract.CONTENT_URI, values, selection, null);
+        Log.d(TAG, "Friend updated");
+    }
+    // Удаление
+    public void deleteProvider(View view){
+        ContentResolver contentResolver = getContentResolver();
+        String selection = FriendsContract.Columns.NAME + " = ?";
+        String[] args = {"Sam"};
+        int count = contentResolver.delete(FriendsContract.CONTENT_URI, selection, args);
+        Log.d(TAG, "Friend deleted");
     }
 }
