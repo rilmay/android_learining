@@ -1,9 +1,13 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -82,6 +86,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -90,7 +95,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     List<String> countries = new ArrayList<>(Arrays.asList("Бразилия","Аргентина","Колумбия","Чили","Уругвай"));
 
     int clicks = 0;
@@ -1614,6 +1619,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAppProviderLayout(Bundle bundle) {
         setContentView(R.layout.app_provider_layout);
+
+        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
     }
 
 
@@ -1674,5 +1681,50 @@ public class MainActivity extends AppCompatActivity {
         String[] args = {"Sam"};
         int count = contentResolver.delete(FriendsContract.CONTENT_URI, selection, args);
         Log.d(TAG, "Friend deleted");
+    }
+    private static final int LOADER_ID = 225;
+
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        String[] projection = {
+                FriendsContract.Columns._ID,
+                FriendsContract.Columns.NAME,
+                FriendsContract.Columns.EMAIL,
+                FriendsContract.Columns.PHONE
+        };
+        if(id == LOADER_ID)
+            return new CursorLoader(this, FriendsContract.CONTENT_URI,
+                    projection,
+                    null,
+                    null,
+                    FriendsContract.Columns.NAME);
+        else
+            throw new InvalidParameterException("Invalid loader id");
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        if(data != null){
+            Log.d(TAG, "count: " + data.getCount());
+            // перебор элементов
+            while(data.moveToNext()){
+                for(int i=0; i < data.getColumnCount(); i++){
+                    Log.d(TAG, data.getColumnName(i) + " : " + data.getString(i));
+                }
+                Log.d(TAG, "=========================");
+            }
+            data.close();
+        }
+        else{
+            Log.d(TAG, "Cursor is null");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+        Log.d(TAG, "onLoaderReset...");
     }
 }
