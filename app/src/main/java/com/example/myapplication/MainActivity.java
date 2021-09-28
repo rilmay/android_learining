@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toAppProviderLayout(savedInstanceState);
+        userSavingJson(savedInstanceState);
     }
 
     public void menuTitleLayout(Bundle bundle) {
@@ -1726,5 +1726,53 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
         Log.d(TAG, "onLoaderReset...");
+    }
+
+
+    private ArrayAdapter<User> adapter;
+    private EditText nameText, ageText;
+    private List<User> users;
+    ListView listView;
+
+    public void userSavingJson(Bundle bundle) {
+        setContentView(R.layout.user_json_saving);
+
+        nameText = (EditText) findViewById(R.id.nameText);
+        ageText = (EditText) findViewById(R.id.ageText);
+        listView = (ListView) findViewById(R.id.list);
+        users = new ArrayList<User>();
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+        listView.setAdapter(adapter);
+    }
+
+    public void addUserJson(View view){
+        String name = nameText.getText().toString();
+        int age = Integer.parseInt(ageText.getText().toString());
+        User user = new User(name, age);
+        users.add(user);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void saveJson(View view){
+
+        boolean result = JSONHelper.exportToJSON(this, users);
+        if(result){
+            Toast.makeText(this, "Данные сохранены", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this, "Не удалось сохранить данные", Toast.LENGTH_LONG).show();
+        }
+    }
+    public void openJson(View view){
+        users = JSONHelper.importFromJSON(this);
+        if(users!=null){
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+            listView.setAdapter(adapter);
+            Toast.makeText(this, "Данные восстановлены", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this, "Не удалось открыть данные", Toast.LENGTH_LONG).show();
+        }
     }
 }

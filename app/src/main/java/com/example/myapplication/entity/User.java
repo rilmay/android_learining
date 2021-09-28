@@ -29,6 +29,11 @@ public class User implements Parcelable {
         this.company = company;
         this.age = age;
     }
+
+    public User(String name, int age){
+        this.name = name;
+        this.age = age;
+    }
     public String getName() {
         return name;
     }
@@ -58,5 +63,14 @@ public class User implements Parcelable {
         dest.writeString(name);
         dest.writeString(company);
         dest.writeInt(age);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
